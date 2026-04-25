@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visibility Audit — WebFluence Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #050505; color: #F2F2F2; font-family: Inter, sans-serif; }
+  body { padding: 0; min-height: 100vh; }
+  h1, h2, h3, h4 { font-family: Poppins, sans-serif; }
+  a { color: #E9204F; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .page { max-width: 1180px; margin: 0 auto; padding: 56px 40px; page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+
+  .header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.07); margin-bottom: 48px; }
+  .logo-area { display: flex; align-items: center; gap: 14px; }
+  .logo-mark { width: 44px; height: 44px; background: #E9204F; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: Poppins, sans-serif; font-weight: 900; font-size: 18px; color: #fff; }
+  .logo-text { font-family: Poppins, sans-serif; font-weight: 900; font-size: 18px; color: #F2F2F2; }
+  .logo-text span { color: #E9204F; }
+  .header-meta { font-size: 11px; color: #8A8A8A; font-family: 'JetBrains Mono', monospace; text-align: right; }
+
+  .cover { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 80px 40px; }
+  .cover-eyebrow { font-family: Poppins, sans-serif; font-weight: 900; font-size: 13px; letter-spacing: 0.25em; text-transform: uppercase; color: #E9204F; margin-bottom: 24px; }
+  .cover-title { font-family: Poppins, sans-serif; font-weight: 900; font-size: 56px; line-height: 1.05; color: #F2F2F2; margin-bottom: 24px; max-width: 860px; }
+  .cover-sub { font-family: Poppins, sans-serif; font-weight: 600; font-size: 22px; color: #8A8A8A; margin-bottom: 48px; max-width: 720px; line-height: 1.4; }
+  .cover-meta { display: grid; grid-template-columns: repeat(3, auto); gap: 48px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.07); }
+  .cover-meta .label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #8A8A8A; margin-bottom: 4px; }
+  .cover-meta .value { font-family: Poppins, sans-serif; font-weight: 700; font-size: 16px; color: #F2F2F2; }
+
+  .section-eyebrow { font-family: Poppins, sans-serif; font-weight: 900; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: #E9204F; margin-bottom: 8px; }
+  .section-title { font-family: Poppins, sans-serif; font-weight: 900; font-size: 36px; line-height: 1.15; color: #F2F2F2; margin-bottom: 12px; }
+  .section-lede { font-size: 15px; color: #8A8A8A; line-height: 1.65; max-width: 760px; margin-bottom: 40px; }
+
+  .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+  .col-3 { grid-column: span 3; } .col-4 { grid-column: span 4; } .col-6 { grid-column: span 6; } .col-8 { grid-column: span 8; } .col-12 { grid-column: span 12; }
+
+  .card { background: #141414; border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 24px; }
+  .card-label { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #8A8A8A; margin-bottom: 14px; }
+  .card-title { font-family: Poppins, sans-serif; font-weight: 700; font-size: 17px; color: #F2F2F2; margin-bottom: 8px; }
+  .card-body { font-size: 13px; color: #A0A0A0; line-height: 1.6; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .stat { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 18px; text-align: center; }
+  .stat-value { font-family: Poppins, sans-serif; font-weight: 900; font-size: 30px; color: #E9204F; line-height: 1; }
+  .stat-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8A8A; margin-top: 8px; }
+
+  .data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .data-table th { text-align: left; padding: 12px 14px; font-family: Poppins, sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #8A8A8A; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .data-table td { padding: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #F2F2F2; vertical-align: top; }
+  .data-table td.muted { color: #8A8A8A; }
+  .data-table td.accent { color: #E9204F; font-weight: 600; }
+  .data-table td.url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #A0A0A0; }
+  .data-table tr:last-child td { border-bottom: none; }
+
+  .pill { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 10px; font-weight: 600; font-family: Poppins, sans-serif; letter-spacing: 0.05em; }
+  .pill-critical { background: rgba(233,32,79,0.15); color: #E9204F; }
+  .pill-high { background: rgba(255,140,40,0.15); color: #FF8C28; }
+  .pill-medium { background: rgba(255,200,40,0.12); color: #FFC828; }
+  .pill-low { background: rgba(160,160,160,0.12); color: #A0A0A0; }
+  .pill-up { background: rgba(46,200,128,0.15); color: #2EC880; }
+  .pill-down { background: rgba(233,32,79,0.15); color: #E9204F; }
+
+  .note { background: rgba(233,32,79,0.08); border: 1px solid rgba(233,32,79,0.25); border-radius: 10px; padding: 18px 22px; font-size: 13px; color: #F2F2F2; line-height: 1.7; margin: 24px 0; }
+  .note strong { color: #E9204F; }
+
+  .fix-list { list-style: none; }
+  .fix-item { display: flex; gap: 14px; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .fix-item:last-child { border-bottom: none; }
+  .fix-priority { flex-shrink: 0; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: Poppins, sans-serif; font-weight: 900; font-size: 12px; }
+  .fix-priority.p1 { background: rgba(233,32,79,0.15); color: #E9204F; }
+  .fix-priority.p2 { background: rgba(255,140,40,0.15); color: #FF8C28; }
+  .fix-priority.p3 { background: rgba(160,160,160,0.12); color: #A0A0A0; }
+  .fix-content { flex: 1; }
+  .fix-title { font-family: Poppins, sans-serif; font-weight: 700; font-size: 14px; color: #F2F2F2; margin-bottom: 4px; }
+  .fix-desc { font-size: 12px; color: #A0A0A0; line-height: 1.6; }
+  .fix-meta { font-size: 10px; color: #8A8A8A; margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+
+  .footer { margin-top: 56px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.07); display: grid; grid-template-columns: 1fr 1fr; gap: 32px; font-size: 12px; color: #8A8A8A; }
+  .footer-block .label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #8A8A8A; margin-bottom: 8px; }
+  .footer-block .value { color: #F2F2F2; font-family: Poppins, sans-serif; font-weight: 600; }
+  .footer-cta { margin-top: 20px; padding: 16px 20px; background: rgba(233,32,79,0.08); border: 1px solid rgba(233,32,79,0.25); border-radius: 10px; font-size: 13px; color: #F2F2F2; }
+  .footer-cta strong { color: #E9204F; }
+
+  @media print {
+    html, body { background: #050505 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { padding: 24px; }
+    .cover { min-height: 90vh; }
+  }
+  @media (max-width: 900px) {
+    .col-3, .col-4, .col-6, .col-8 { grid-column: span 12; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .cover-meta { grid-template-columns: 1fr; gap: 16px; }
+    .footer { grid-template-columns: 1fr; }
+    .cover-title { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area">
+      <div class="logo-mark">W</div>
+      <div class="logo-text">Web<span>Fluence</span> Digital</div>
+    </div>
+    <div class="header-meta">
+      Visibility Audit<br>
+      v0.1 · 2026-04-25
+    </div>
+  </div>
+  <div class="cover">
+    <p class="cover-eyebrow">Visibility Audit</p>
+    <h1 class="cover-title">WebFluence Digital</h1>
+    <p class="cover-sub">The Visibility Strategist Squad's first battle-test. Take a one-page Vercel site from invisible to ranking on Page 1 for Dublin web design SME queries.</p>
+    <div class="cover-meta">
+      <div><div class="label">Target Site</div><div class="value">webfluence-digital.vercel.app</div></div>
+      <div><div class="label">Plan Period</div><div class="value">Q2 2026</div></div>
+      <div><div class="label">Niche</div><div class="value">Web Design Agency · Dublin SME</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXECUTIVE SUMMARY -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area"><div class="logo-mark">W</div><div class="logo-text">Web<span>Fluence</span> Digital</div></div>
+    <div class="header-meta">WebFluence Digital · Visibility Audit</div>
+  </div>
+  <p class="section-eyebrow">01 — Executive Summary</p>
+  <h2 class="section-title">Where you stand. What we'd change.</h2>
+  <p class="section-lede">Two domains in scope. The legacy site (webfluence.digital) is what Google currently sees and ranks — a Vite React app with content rendered client-side. The new site (webfluence-digital.vercel.app) is a single static HTML page — fully crawlable but with no surface area to rank against. The plan: expand the new site to 10 pages, fix 8 technical issues, build entity signals (Wikidata + Crunchbase), ship 12 cluster posts in 90 days, and migrate the legacy domain when the new architecture stabilises.</p>
+
+  <div class="stat-grid" style="margin-bottom: 32px;">
+    <div class="stat"><div class="stat-value">8</div><div class="stat-label">Keyword Targets</div></div>
+    <div class="stat"><div class="stat-value">8</div><div class="stat-label">AEO Questions</div></div>
+    <div class="stat"><div class="stat-value">8</div><div class="stat-label">Technical Issues</div></div>
+    <div class="stat"><div class="stat-value">10</div><div class="stat-label">Pages Recommended</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="card col-6">
+      <div class="card-label">SEO Snapshot</div>
+      <div class="card-title">8 keywords. 1 owner page each. 1 cluster.</div>
+      <div class="card-body">Primary commercial cluster: "web design dublin" (KD 32, vol 880) + "web design ireland" (KD 28, vol 590), both owned by a single /services/web-design pillar. Secondary: SEO Pillar (KD 38, vol 1100) on /services/seo. Critical: pricing query (KD 16, vol 480) + AEO triple-win on /pricing. Targets: Top 3 by 2026-08-31 on the primary cluster.</div>
+    </div>
+    <div class="card col-6">
+      <div class="card-label">AEO Snapshot</div>
+      <div class="card-title">8 questions banked. Audit pending.</div>
+      <div class="card-body">Multi-platform citation baseline scheduled for 2026-05-09 review (ChatGPT, Claude, Gemini, Perplexity). Eight pricing/comparison/best-of questions banked with answer drafts. Highest-leverage AEO target: "how much does a website cost in dublin" (PAA + AI Overview opportunity, currently uncited for Dublin-specific pricing). FAQ schema on /pricing + / is the P1 win.</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>The headline:</strong> Both domains underperform their potential. Google indexes the legacy React SPA but the new static site is invisible by design (only one page exists). The single biggest unlock isn't ranking work — it's expanding the new site into 10 pages with proper schema, then migrating. That alone moves the brand from invisible to competitive within 90 days.
+  </div>
+</section>
+
+<!-- AI CITATION SCORECARD -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area"><div class="logo-mark">W</div><div class="logo-text">Web<span>Fluence</span> Digital</div></div>
+    <div class="header-meta">WebFluence Digital · Visibility Audit</div>
+  </div>
+  <p class="section-eyebrow">02 — AI Citation Scorecard</p>
+  <h2 class="section-title">How often AI assistants recommend you.</h2>
+  <p class="section-lede">Audit scheduled for the 2026-05-09 review window. The prompt set (30 prompts × 4 platforms = 120 data points) is built from the Question Bank tab. Baseline citation rates and lost-prompt analysis populate at first measurement. AI citation behaviour is point-in-time and shifts with model updates — every audit is dated.</p>
+
+  <div class="card col-12">
+    <div class="card-label">Top 8 Questions to Audit Against</div>
+    <div class="card-body" style="margin-bottom: 16px;">These are the queries the audit will test on each platform. Each has an answer draft ready, a target page, and a Schema Type recommendation. Citation status defaults to "Not cited" pending baseline.</div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Question</th><th>Source</th><th>Intent</th><th>Schema</th><th>Priority</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>how much does a website cost in dublin</td><td class="muted">PAA</td><td class="muted">Pricing</td><td class="accent">FAQPage</td><td><span class="pill pill-critical">Critical</span></td></tr>
+        <tr><td>best web designer for small business in ireland</td><td class="muted">AnswerThePublic</td><td class="muted">Best-of</td><td class="accent">Article</td><td><span class="pill pill-critical">Critical</span></td></tr>
+        <tr><td>what is the difference between web design and web development</td><td class="muted">PAA</td><td class="muted">What-is</td><td class="accent">Article</td><td><span class="pill pill-high">High</span></td></tr>
+        <tr><td>how long does it take to build a website</td><td class="muted">Reddit</td><td class="muted">How-to</td><td class="accent">HowTo</td><td><span class="pill pill-high">High</span></td></tr>
+        <tr><td>do i need seo for a small business website</td><td class="muted">AnswerThePublic</td><td class="muted">What-is</td><td class="accent">Article</td><td><span class="pill pill-high">High</span></td></tr>
+        <tr><td>what is local seo in ireland</td><td class="muted">PAA</td><td class="muted">What-is</td><td class="accent">Service</td><td><span class="pill pill-high">High</span></td></tr>
+        <tr><td>how to get my business on page 1 of google</td><td class="muted">GSC</td><td class="muted">How-to</td><td class="accent">HowTo</td><td><span class="pill pill-high">High</span></td></tr>
+        <tr><td>best ai automation tools for small business ireland</td><td class="muted">Reddit</td><td class="muted">Best-of</td><td class="accent">Article</td><td><span class="pill pill-medium">Medium</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- KEYWORD LANDSCAPE -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area"><div class="logo-mark">W</div><div class="logo-text">Web<span>Fluence</span> Digital</div></div>
+    <div class="header-meta">WebFluence Digital · Visibility Audit</div>
+  </div>
+  <p class="section-eyebrow">03 — Keyword Landscape</p>
+  <h2 class="section-title">What you should be ranking for.</h2>
+  <p class="section-lede">Eight keywords prioritised by combination of volume, current position, and realistic movement. Two own a single pillar page (/services/web-design). The rest split across SEO, AI Automation, and three industry verticals (small business, dental, fitness). Pricing query is the triple-win target.</p>
+
+  <table class="data-table">
+    <thead>
+      <tr><th>Keyword</th><th>Vol</th><th>KD</th><th>Intent</th><th>Current</th><th>Target</th><th>Priority</th><th>Owner Page</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>web design dublin</td><td class="muted">880</td><td class="muted">32</td><td class="muted">Commercial</td><td class="muted">—</td><td class="accent">3</td><td><span class="pill pill-critical">Critical</span></td><td class="url">/services/web-design</td></tr>
+      <tr><td>web design ireland</td><td class="muted">590</td><td class="muted">28</td><td class="muted">Commercial</td><td class="muted">—</td><td class="accent">5</td><td><span class="pill pill-critical">Critical</span></td><td class="url">/services/web-design</td></tr>
+      <tr><td>seo dublin</td><td class="muted">1100</td><td class="muted">38</td><td class="muted">Commercial</td><td class="muted">—</td><td class="accent">5</td><td><span class="pill pill-high">High</span></td><td class="url">/services/seo</td></tr>
+      <tr><td>how much does a website cost ireland</td><td class="muted">480</td><td class="muted">16</td><td class="muted">Informational</td><td class="muted">—</td><td class="accent">1</td><td><span class="pill pill-critical">Critical</span></td><td class="url">/pricing</td></tr>
+      <tr><td>small business website ireland</td><td class="muted">320</td><td class="muted">18</td><td class="muted">Commercial</td><td class="muted">—</td><td class="accent">1</td><td><span class="pill pill-high">High</span></td><td class="url">/industries/small-business</td></tr>
+      <tr><td>ai automation ireland</td><td class="muted">210</td><td class="muted">22</td><td class="muted">Commercial</td><td class="muted">—</td><td class="accent">3</td><td><span class="pill pill-medium">Medium</span></td><td class="url">/services/ai-automation</td></tr>
+      <tr><td>dental website design ireland</td><td class="muted">110</td><td class="muted">14</td><td class="muted">Commercial</td><td class="muted">—</td><td class="accent">1</td><td><span class="pill pill-high">High</span></td><td class="url">/industries/dental</td></tr>
+      <tr><td>gym website design ireland</td><td class="muted">90</td><td class="muted">12</td><td class="muted">Commercial</td><td class="muted">—</td><td class="accent">1</td><td><span class="pill pill-medium">Medium</span></td><td class="url">/industries/fitness</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- TECHNICAL FINDINGS -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area"><div class="logo-mark">W</div><div class="logo-text">Web<span>Fluence</span> Digital</div></div>
+    <div class="header-meta">WebFluence Digital · Visibility Audit</div>
+  </div>
+  <p class="section-eyebrow">04 — Technical Findings</p>
+  <h2 class="section-title">What's broken under the hood.</h2>
+  <p class="section-lede">Three Critical issues, four High, one Medium. The two architecture issues are the biggest unlocks: (1) the new site needs page expansion, (2) the legacy site is React SPA and needs SSG migration before the cutover. Both shippable in the build squad's normal cadence.</p>
+
+  <table class="data-table">
+    <thead>
+      <tr><th>Issue</th><th>Category</th><th>Severity</th><th>Source</th><th>Affected</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>New Vercel site is single-page — no internal linking architecture or page expansion</td><td class="muted">Internal Linking</td><td><span class="pill pill-critical">Critical</span></td><td class="muted">Manual</td><td class="url">webfluence-digital.vercel.app/</td></tr>
+      <tr><td>Missing Organization + LocalBusiness JSON-LD schema on new site</td><td class="muted">Schema</td><td><span class="pill pill-critical">Critical</span></td><td class="muted">Manual</td><td class="url">webfluence-digital.vercel.app/</td></tr>
+      <tr><td>New site title tag too generic for primary commercial query</td><td class="muted">Indexation</td><td><span class="pill pill-high">High</span></td><td class="muted">Manual</td><td class="url">webfluence-digital.vercel.app/</td></tr>
+      <tr><td>Legacy site is React SPA with potential JS rendering issues</td><td class="muted">Crawlability</td><td><span class="pill pill-high">High</span></td><td class="muted">Manual</td><td class="url">webfluence.digital/</td></tr>
+      <tr><td>No FAQ schema on pricing/services content on either site</td><td class="muted">Schema</td><td><span class="pill pill-high">High</span></td><td class="muted">Manual</td><td class="url">both domains</td></tr>
+      <tr><td>No XML sitemap on new Vercel site</td><td class="muted">Crawlability</td><td><span class="pill pill-high">High</span></td><td class="muted">Manual</td><td class="url">webfluence-digital.vercel.app/</td></tr>
+      <tr><td>Legacy site loads 5+ third-party trackers — likely impacts LCP</td><td class="muted">Core Web Vitals</td><td><span class="pill pill-medium">Medium</span></td><td class="muted">Manual</td><td class="url">webfluence.digital/</td></tr>
+      <tr><td>Brand entity not registered on Wikidata or Crunchbase</td><td class="muted">Entity</td><td><span class="pill pill-medium">Medium</span></td><td class="muted">Manual</td><td class="url">external</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- SITEMAP RECOMMENDATIONS -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area"><div class="logo-mark">W</div><div class="logo-text">Web<span>Fluence</span> Digital</div></div>
+    <div class="header-meta">WebFluence Digital · Visibility Audit</div>
+  </div>
+  <p class="section-eyebrow">05 — Sitemap Recommendations</p>
+  <h2 class="section-title">The pages that should exist.</h2>
+  <p class="section-lede">From 1 page to 10. Each owns a primary keyword and answers a primary AEO question. Schema spec'd per page. The build squad consumes this directly — Visual Storyteller turns it into a storyboard, UX Architect turns it into routes + JSON-LD blocks.</p>
+
+  <table class="data-table">
+    <thead>
+      <tr><th>Page Slug</th><th>Type</th><th>Primary Keyword</th><th>Schema</th><th>Priority</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="url">/</td><td class="muted">Pillar</td><td>web design dublin</td><td class="muted">Organization + LocalBusiness</td><td><span class="pill pill-critical">Critical</span></td><td class="muted">Live</td></tr>
+      <tr><td class="url">/services/web-design</td><td class="muted">Service</td><td>web design dublin</td><td class="muted">Service + FAQPage</td><td><span class="pill pill-critical">Critical</span></td><td class="muted">Proposed</td></tr>
+      <tr><td class="url">/services/seo</td><td class="muted">Service</td><td>seo dublin</td><td class="muted">Service + FAQPage</td><td><span class="pill pill-critical">Critical</span></td><td class="muted">Proposed</td></tr>
+      <tr><td class="url">/services/ai-automation</td><td class="muted">Service</td><td>ai automation ireland</td><td class="muted">Service + FAQPage</td><td><span class="pill pill-medium">Medium</span></td><td class="muted">Proposed</td></tr>
+      <tr><td class="url">/industries/dental</td><td class="muted">Industry</td><td>dental website design ireland</td><td class="muted">Service + Article</td><td><span class="pill pill-high">High</span></td><td class="muted">Proposed</td></tr>
+      <tr><td class="url">/industries/fitness</td><td class="muted">Industry</td><td>gym website design ireland</td><td class="muted">Service + FAQPage</td><td><span class="pill pill-medium">Medium</span></td><td class="muted">Proposed</td></tr>
+      <tr><td class="url">/industries/small-business</td><td class="muted">Industry</td><td>small business website ireland</td><td class="muted">Service + FAQPage</td><td><span class="pill pill-high">High</span></td><td class="muted">Proposed</td></tr>
+      <tr><td class="url">/pricing</td><td class="muted">Resource</td><td>how much does a website cost ireland</td><td class="muted">FAQPage + Product</td><td><span class="pill pill-critical">Critical</span></td><td class="muted">Proposed</td></tr>
+      <tr><td class="url">/resources/page-1-google-guide</td><td class="muted">Pillar</td><td>how to get on page 1 of google</td><td class="muted">Article + HowTo + FAQPage</td><td><span class="pill pill-high">High</span></td><td class="muted">Proposed</td></tr>
+      <tr><td class="url">/case-studies/adare-clinic</td><td class="muted">Resource</td><td>adare clinic website case study</td><td class="muted">Article (CaseStudy)</td><td><span class="pill pill-medium">Medium</span></td><td class="muted">Proposed</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- FIX PACK -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area"><div class="logo-mark">W</div><div class="logo-text">Web<span>Fluence</span> Digital</div></div>
+    <div class="header-meta">WebFluence Digital · Visibility Audit</div>
+  </div>
+  <p class="section-eyebrow">06 — Fix Pack</p>
+  <h2 class="section-title">Do these in this order.</h2>
+  <p class="section-lede">P1 in 7 days. P2 in 30. P3 within 90. Each has expected impact — quoted, not guessed. The first three P1 fixes unlock everything downstream.</p>
+
+  <ul class="fix-list">
+    <li class="fix-item">
+      <div class="fix-priority p1">P1</div>
+      <div class="fix-content">
+        <div class="fix-title">Expand new Vercel site to 10-page architecture</div>
+        <div class="fix-desc">Implement the Sitemap Recommendations. Use Vercel file-based routing or Astro/Next.js static export. Preserve the cinematic homepage; build out service, industry, pricing, resource, and case study pages. Internal linking: services up to /, industries to services + /, resources cross-linked.</div>
+        <div class="fix-meta">EXPECTED IMPACT: unlocks 8 keyword targets and 10 ranking surfaces. Single biggest move in the plan.</div>
+      </div>
+    </li>
+    <li class="fix-item">
+      <div class="fix-priority p1">P1</div>
+      <div class="fix-content">
+        <div class="fix-title">Add Organization + LocalBusiness + FAQPage JSON-LD schema</div>
+        <div class="fix-desc">JSON-LD block in &lt;head&gt; on /, /pricing, and every service page. Validate via search.google.com/test/rich-results before deploy. FAQPage uses the 8 Question Bank entries as the seed set.</div>
+        <div class="fix-meta">EXPECTED IMPACT: +15-25% AEO citation rate on pricing/services queries. Eligible for AI Overview.</div>
+      </div>
+    </li>
+    <li class="fix-item">
+      <div class="fix-priority p1">P1</div>
+      <div class="fix-content">
+        <div class="fix-title">Update title tag + meta description on /</div>
+        <div class="fix-desc">Replace current "WebFluence Digital — ROI-Driven Web Design & SEO for Irish & UK SMEs" with "Web Design Dublin | Live in 7 Days | WebFluence Digital" (55 chars, keyword-led). Meta description leads with "Custom websites for Dublin SMEs. Live in 7 days. Conversion-first design with SEO baked in. Starter from €997."</div>
+        <div class="fix-meta">EXPECTED IMPACT: incremental CTR lift on existing impressions. Aligns title with primary commercial keyword.</div>
+      </div>
+    </li>
+    <li class="fix-item">
+      <div class="fix-priority p2">P2</div>
+      <div class="fix-content">
+        <div class="fix-title">Build Wikidata + Crunchbase entity profiles</div>
+        <div class="fix-desc">Wikidata: type Q4830453 (business), inception, founder (Dusan Walla), area-served, official website, sameAs links. Crunchbase: organisation profile with founders, category, founding location.</div>
+        <div class="fix-meta">EXPECTED IMPACT: stronger entity disambiguation in Claude + Perplexity. Pre-requisite for sustained AI citation.</div>
+      </div>
+    </li>
+    <li class="fix-item">
+      <div class="fix-priority p2">P2</div>
+      <div class="fix-content">
+        <div class="fix-title">Plan legacy webfluence.digital migration to SSG</div>
+        <div class="fix-desc">Current Vite React SPA renders client-side. Migrate to Next.js static export or Astro before sunsetting in favour of new Vercel site. Preserve URL structure during cutover. Submit updated sitemap to GSC.</div>
+        <div class="fix-meta">EXPECTED IMPACT: protects existing impressions during the migration. Avoids ranking loss on cutover.</div>
+      </div>
+    </li>
+    <li class="fix-item">
+      <div class="fix-priority p2">P2</div>
+      <div class="fix-content">
+        <div class="fix-title">Run baseline AI citation audit (4 platforms × 30 prompts)</div>
+        <div class="fix-desc">Query ChatGPT, Claude, Gemini, Perplexity with the Question Bank prompt set. Record citation rate per platform, identify which competitors win. Update Visibility Plan with baseline scorecard.</div>
+        <div class="fix-meta">EXPECTED IMPACT: data foundation for AEO progress measurement. Required before P1/P2/P3 fixes can be evaluated.</div>
+      </div>
+    </li>
+    <li class="fix-item">
+      <div class="fix-priority p3">P3</div>
+      <div class="fix-content">
+        <div class="fix-title">Original case study content for AI training corpus</div>
+        <div class="fix-desc">Publish the Adare Clinic and Shelbourne Dental case studies with original screenshots, quoted client testimonials, and ranking/traffic deltas. Goal: become the authoritative reference for "best dental web designer ireland" in Perplexity.</div>
+        <div class="fix-meta">EXPECTED IMPACT: long-tail AEO citations on industry-specific best-of queries.</div>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- 90-DAY CONTENT PLAN -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area"><div class="logo-mark">W</div><div class="logo-text">Web<span>Fluence</span> Digital</div></div>
+    <div class="header-meta">WebFluence Digital · Visibility Audit</div>
+  </div>
+  <p class="section-eyebrow">07 — 90-Day Content Plan</p>
+  <h2 class="section-title">12 posts to ship.</h2>
+  <p class="section-lede">Mix of pillar/cluster long-form (60%) and AEO-friendly question posts (40%). Each one targets a real keyword AND a real question. Distribution: LinkedIn always, plus Reddit/Newsletter/Twitter as fits.</p>
+
+  <table class="data-table">
+    <thead>
+      <tr><th>Date</th><th>Post Title</th><th>Format</th><th>Target Keyword</th><th>Owner</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="muted">2026-05-06</td><td>How Much Does a Website Cost in Dublin in 2026? (The Real Numbers)</td><td class="muted">Guide</td><td class="accent">how much does a website cost ireland</td><td class="muted">AEO</td></tr>
+      <tr><td class="muted">2026-05-13</td><td>Best Web Designer for Small Business in Ireland: A Buyer's Guide</td><td class="muted">Comparison</td><td class="accent">best web designer ireland</td><td class="muted">AEO</td></tr>
+      <tr><td class="muted">2026-05-20</td><td>Web Design vs Web Development: What Dublin SMEs Need to Know</td><td class="muted">Blog Post</td><td class="accent">web design vs web development</td><td class="muted">AEO</td></tr>
+      <tr><td class="muted">2026-05-27</td><td>How to Get Your Business on Page 1 of Google: The 4-Pillar Framework</td><td class="muted">Guide (Pillar)</td><td class="accent">how to get on page 1 of google</td><td class="muted">SEO</td></tr>
+      <tr><td class="muted">2026-06-03</td><td>Dental Website Design Ireland: Why Most Clinic Sites Fail</td><td class="muted">Blog Post</td><td class="accent">dental website design ireland</td><td class="muted">SEO</td></tr>
+      <tr><td class="muted">2026-06-10</td><td>Local SEO Ireland: The Complete 2026 Guide for Dublin SMEs</td><td class="muted">Guide</td><td class="accent">local seo ireland</td><td class="muted">SEO</td></tr>
+      <tr><td class="muted">2026-06-17</td><td>Gym Website Design: 7 Features Irish Fitness Studios Actually Need</td><td class="muted">Blog Post</td><td class="accent">gym website design ireland</td><td class="muted">SEO</td></tr>
+      <tr><td class="muted">2026-06-24</td><td>AI Automation for Irish SMEs: 5 Use Cases That Actually Work</td><td class="muted">Blog Post</td><td class="accent">ai automation ireland</td><td class="muted">AEO</td></tr>
+      <tr><td class="muted">2026-07-01</td><td>Cinematic Web Design: When Your Website Is a Marketing Asset</td><td class="muted">Blog Post</td><td class="accent">cinematic web design</td><td class="muted">AEO</td></tr>
+      <tr><td class="muted">2026-07-08</td><td>Case Study: How We Took Adare Dental Clinic's Site Live in 7 Days</td><td class="muted">Case Study</td><td class="accent">adare clinic case study</td><td class="muted">PM</td></tr>
+      <tr><td class="muted">2026-07-15</td><td>Schema Markup for Dublin SMEs: The 5 Types You Actually Need</td><td class="muted">How-to</td><td class="accent">schema markup small business ireland</td><td class="muted">SEO</td></tr>
+      <tr><td class="muted">2026-07-22</td><td>How AI Search Is Changing What "Ranking" Means for Irish SMEs</td><td class="muted">Guide (Pillar)</td><td class="accent">ai search seo ireland</td><td class="muted">AEO</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note" style="margin-top: 32px;">
+    <strong>Next review:</strong> 2026-05-09. We re-run the AI citation audit, ranking tracker, and technical audit against this plan to measure movement and generate the next fix pack.
+  </div>
+</section>
+
+<!-- CONTACT FOOTER -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area"><div class="logo-mark">W</div><div class="logo-text">Web<span>Fluence</span> Digital</div></div>
+    <div class="header-meta">WebFluence Digital · Visibility Audit</div>
+  </div>
+  <p class="section-eyebrow">Next Steps</p>
+  <h2 class="section-title">Page 1, or we keep working.</h2>
+  <p class="section-lede">This audit is the start of the engagement, not the end. The retainer cadence is monthly: audit the deltas, ship the fixes, measure the citations, repeat. Page 1 isn't a one-shot — it's a compounding system.</p>
+
+  <div class="footer">
+    <div class="footer-block">
+      <div class="label">Founder &amp; Operator</div>
+      <div class="value">Dusan Walla</div>
+      <div style="margin-top: 12px; font-size: 12px;">dusan.walla@webfluence.digital</div>
+      <div style="font-size: 12px;">+353 87 232 99 76</div>
+      <div style="font-size: 12px;">Dublin, Ireland</div>
+    </div>
+    <div class="footer-block">
+      <div class="label">Methodology &amp; Sources</div>
+      <div style="font-size: 12px; color: #A0A0A0; line-height: 1.7; margin-top: 6px;">
+        Google Search Console (via Supermetrics) · Ahrefs · Apify (Google Trends, SERP, Reddit) · Multi-platform AI citation testing (ChatGPT, Claude, Gemini, Perplexity) · Lighthouse Core Web Vitals · Schema.org validators · Generated by Visibility Strategist plugin v0.1.0 — agents seo-strategist + aeo-strategist
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-cta">
+    <strong>Want the full live data?</strong> Every record in this report — every keyword, every question, every technical issue, every recommendation — is in your Visibility Strategist Airtable base, kept fresh weekly. This PDF is the snapshot; the base is the live source of truth. Base ID: appqiOiuFJBp0UNbF.
+  </div>
+</section>
+
+</body>
+</html>

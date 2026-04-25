@@ -1,0 +1,43 @@
+name: Feature request
+description: A capability the plugin doesn't have yet
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Big features (third agent, schema changes, new Airtable tabs) — please discuss in an issue first before opening a PR. Small additions can go straight to PR.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's the problem this solves?
+      description: Real-world scenario, not the solution. "I run the squad against a site and have no way to..." vs. "Add a button that..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: What's your proposed solution?
+      description: Specific is great. Pseudocode, sketches, or a link to a reference implementation in another tool all help.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Any alternatives you considered?
+      description: What did you rule out and why?
+    validations:
+      required: false
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Roughly how big is this?
+      options:
+        - "Small (a few hours' work, no schema changes)"
+        - "Medium (a day or two, possibly minor schema additions)"
+        - "Large (architectural — new agent, new tab, new rendering pipeline)"
+    validations:
+      required: true

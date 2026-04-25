@@ -1,0 +1,22 @@
+{
+  "name": "visibility-strategist",
+  "version": "0.1.0",
+  "description": "The retainer half of the WebFluence agency. Two paired specialist agents — SEO Strategist and AEO Strategist — that audit a site, write a Visibility Plan into Airtable, and run the monthly cadence of keyword work, AEO question coverage, schema, and ranking tracking. Pairs with the webfluence-squad build plugin or runs solo on existing sites.",
+  "author": {
+    "name": "Dusan Walla",
+    "email": "dusan.walla@webfluence.digital"
+  },
+  "homepage": "https://webfluence-digital.vercel.app",
+  "license": "MIT",
+  "keywords": [
+    "seo",
+    "aeo",
+    "geo",
+    "rankings",
+    "ai-citation",
+    "schema",
+    "airtable",
+    "retainer",
+    "webfluence"
+  ]
+}

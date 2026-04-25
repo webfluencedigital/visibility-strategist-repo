@@ -1,0 +1,45 @@
+# Mac / Windows
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+.cursor/
+
+# Node / build artifacts (none in this plugin currently, but future-proofing)
+node_modules/
+dist/
+build/
+*.log
+
+# Python (in case anyone adds tooling for the deliverable rendering)
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+
+# Local / private deliverables — these should NOT ship in the public repo
+visibility-deliverables/
+*-private.pdf
+
+# OS / archive cruft
+*.bak
+*.tmp
+*.orig
+
+# Plugin packaging artifacts (the .plugin zip is built from source, no need to commit)
+*.plugin
+
+# Local setup notes — should not ship in the public repo
+_PUSH_INSTRUCTIONS.md
+_*.md

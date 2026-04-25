@@ -1,0 +1,57 @@
+name: Niche pack contribution
+description: Add SEO + AEO patterns for a new industry vertical or geography
+labels: ["niche-pack"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The plugin currently ships with Dublin SME niche knowledge (dental, aesthetics, gym, restaurants, trades, property, professional services). Niche packs extend this. Open this issue first, then PR — it lets us coordinate if multiple people are working on the same vertical.
+
+  - type: input
+    id: niche
+    attributes:
+      label: Niche / industry
+      placeholder: e.g. SaaS, e-commerce, legal, healthcare, home services
+    validations:
+      required: true
+
+  - type: input
+    id: geography
+    attributes:
+      label: Geography
+      description: Country / city / region the niche pack targets. Use 'global' if no geo specificity.
+      placeholder: e.g. London, UK / US national / global
+    validations:
+      required: true
+
+  - type: textarea
+    id: patterns
+    attributes:
+      label: Key SEO patterns
+      description: Pillar keyword pattern, long-tail patterns, local pack signals (if applicable). Match the format in `agents/seo-strategist.md`.
+      placeholder: |
+        Pillar pattern: "[service] [city]"
+        Long-tail: "best [niche] for [use case]", "[service] near me"
+        Local signals: GBP, NAP consistency, [niche-specific signal]
+    validations:
+      required: true
+
+  - type: textarea
+    id: aeo-patterns
+    attributes:
+      label: Key AEO patterns
+      description: Highest-leverage AEO content types, schema priority, common winning competitor patterns.
+      placeholder: |
+        Highest-leverage: "best [niche] for [outcome]" comparison; "what does [service] cost in [city]"
+        Schema priority: ProfessionalService, Article, FAQPage
+        Competitor patterns: practitioner-led pages with credentials + reviews
+    validations:
+      required: true
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: What's this grounded in?
+      description: Real client work, market research, personal experience? Numbers / sources strengthen the contribution.
+    validations:
+      required: true

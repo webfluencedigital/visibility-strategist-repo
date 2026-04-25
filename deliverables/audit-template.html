@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visibility Audit — {{CLIENT_NAME}}</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #050505; color: #F2F2F2; font-family: Inter, sans-serif; }
+  body { padding: 0; min-height: 100vh; }
+  h1, h2, h3, h4 { font-family: Poppins, sans-serif; }
+  a { color: #E9204F; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Page wrapper for print */
+  .page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 56px 40px;
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* Header band */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    margin-bottom: 48px;
+  }
+  .logo-area { display: flex; align-items: center; gap: 14px; }
+  .logo-mark {
+    width: 44px; height: 44px;
+    background: #E9204F;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: Poppins, sans-serif; font-weight: 900;
+    font-size: 18px; color: #fff;
+  }
+  .logo-text { font-family: Poppins, sans-serif; font-weight: 900; font-size: 18px; color: #F2F2F2; }
+  .logo-text span { color: #E9204F; }
+  .header-meta { font-size: 11px; color: #8A8A8A; font-family: 'JetBrains Mono', monospace; text-align: right; }
+
+  /* Cover page */
+  .cover {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 80px 40px;
+  }
+  .cover-eyebrow {
+    font-family: Poppins, sans-serif; font-weight: 900;
+    font-size: 13px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: #E9204F; margin-bottom: 24px;
+  }
+  .cover-title {
+    font-family: Poppins, sans-serif; font-weight: 900;
+    font-size: 56px; line-height: 1.05;
+    color: #F2F2F2; margin-bottom: 24px;
+    max-width: 860px;
+  }
+  .cover-sub {
+    font-family: Poppins, sans-serif; font-weight: 600;
+    font-size: 22px; color: #8A8A8A;
+    margin-bottom: 48px;
+    max-width: 720px;
+    line-height: 1.4;
+  }
+  .cover-meta {
+    display: grid; grid-template-columns: repeat(3, auto); gap: 48px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+  .cover-meta .label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #8A8A8A; margin-bottom: 4px; }
+  .cover-meta .value { font-family: Poppins, sans-serif; font-weight: 700; font-size: 16px; color: #F2F2F2; }
+
+  /* Section title */
+  .section-eyebrow {
+    font-family: Poppins, sans-serif; font-weight: 900;
+    font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: #E9204F; margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: Poppins, sans-serif; font-weight: 900;
+    font-size: 36px; line-height: 1.15;
+    color: #F2F2F2; margin-bottom: 12px;
+  }
+  .section-lede {
+    font-size: 15px; color: #8A8A8A;
+    line-height: 1.65; max-width: 760px;
+    margin-bottom: 40px;
+  }
+
+  /* Cards grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+  }
+  .col-3 { grid-column: span 3; }
+  .col-4 { grid-column: span 4; }
+  .col-6 { grid-column: span 6; }
+  .col-8 { grid-column: span 8; }
+  .col-12 { grid-column: span 12; }
+
+  .card {
+    background: #141414;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .card-label {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: #8A8A8A; margin-bottom: 14px;
+  }
+  .card-title {
+    font-family: Poppins, sans-serif; font-weight: 700;
+    font-size: 17px; color: #F2F2F2; margin-bottom: 8px;
+  }
+  .card-body {
+    font-size: 13px; color: #A0A0A0; line-height: 1.6;
+  }
+
+  /* Stats / KPIs */
+  .stat-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  }
+  .stat {
+    background: #1a1a1a; border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 8px; padding: 18px; text-align: center;
+  }
+  .stat-value {
+    font-family: Poppins, sans-serif; font-weight: 900;
+    font-size: 30px; color: #E9204F; line-height: 1;
+  }
+  .stat-label {
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #8A8A8A; margin-top: 8px;
+  }
+
+  /* Tables */
+  .data-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 12px;
+  }
+  .data-table th {
+    text-align: left; padding: 12px 14px;
+    font-family: Poppins, sans-serif; font-weight: 700;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: #8A8A8A; border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .data-table td {
+    padding: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: #F2F2F2;
+    vertical-align: top;
+  }
+  .data-table td.muted { color: #8A8A8A; }
+  .data-table td.accent { color: #E9204F; font-weight: 600; }
+  .data-table tr:last-child td { border-bottom: none; }
+
+  /* Pills / tags */
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 10px; font-weight: 600;
+    font-family: Poppins, sans-serif;
+    letter-spacing: 0.05em;
+  }
+  .pill-critical { background: rgba(233,32,79,0.15); color: #E9204F; }
+  .pill-high { background: rgba(255,140,40,0.15); color: #FF8C28; }
+  .pill-medium { background: rgba(255,200,40,0.12); color: #FFC828; }
+  .pill-low { background: rgba(160,160,160,0.12); color: #A0A0A0; }
+  .pill-up { background: rgba(46,200,128,0.15); color: #2EC880; }
+  .pill-down { background: rgba(233,32,79,0.15); color: #E9204F; }
+
+  /* Note callout (lifted from brand-card) */
+  .note {
+    background: rgba(233,32,79,0.08);
+    border: 1px solid rgba(233,32,79,0.25);
+    border-radius: 10px;
+    padding: 18px 22px;
+    font-size: 13px; color: #F2F2F2;
+    line-height: 1.7;
+    margin: 24px 0;
+  }
+  .note strong { color: #E9204F; }
+
+  /* Fix pack list */
+  .fix-list { list-style: none; }
+  .fix-item {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .fix-item:last-child { border-bottom: none; }
+  .fix-priority {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: Poppins, sans-serif; font-weight: 900;
+    font-size: 12px;
+  }
+  .fix-priority.p1 { background: rgba(233,32,79,0.15); color: #E9204F; }
+  .fix-priority.p2 { background: rgba(255,140,40,0.15); color: #FF8C28; }
+  .fix-priority.p3 { background: rgba(160,160,160,0.12); color: #A0A0A0; }
+  .fix-content { flex: 1; }
+  .fix-title { font-family: Poppins, sans-serif; font-weight: 700; font-size: 14px; color: #F2F2F2; margin-bottom: 4px; }
+  .fix-desc { font-size: 12px; color: #A0A0A0; line-height: 1.6; }
+  .fix-meta { font-size: 10px; color: #8A8A8A; margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+
+  /* Footer */
+  .footer {
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    font-size: 12px; color: #8A8A8A;
+  }
+  .footer-block .label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #8A8A8A; margin-bottom: 8px; }
+  .footer-block .value { color: #F2F2F2; font-family: Poppins, sans-serif; font-weight: 600; }
+  .footer-cta {
+    margin-top: 20px;
+    padding: 16px 20px;
+    background: rgba(233,32,79,0.08);
+    border: 1px solid rgba(233,32,79,0.25);
+    border-radius: 10px;
+    font-size: 13px; color: #F2F2F2;
+  }
+  .footer-cta strong { color: #E9204F; }
+
+  /* Print adjustments */
+  @media print {
+    html, body { background: #050505 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { padding: 24px; }
+    .cover { min-height: 90vh; }
+    .stat-grid { grid-template-columns: repeat(4, 1fr); }
+    .grid .col-6 { grid-column: span 6; }
+  }
+
+  @media (max-width: 900px) {
+    .col-3, .col-4, .col-6, .col-8 { grid-column: span 12; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .cover-meta { grid-template-columns: 1fr; gap: 16px; }
+    .footer { grid-template-columns: 1fr; }
+    .cover-title { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================== -->
+<!-- COVER PAGE                                     -->
+<!-- ============================================== -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area">
+      <div class="logo-mark">W</div>
+      <div class="logo-text">Web<span>Fluence</span> Digital</div>
+    </div>
+    <div class="header-meta">
+      Visibility Audit<br>
+      v{{REPORT_VERSION}} · {{REPORT_DATE}}
+    </div>
+  </div>
+
+  <div class="cover">
+    <p class="cover-eyebrow">Visibility Audit</p>
+    <h1 class="cover-title">{{CLIENT_NAME}}</h1>
+    <p class="cover-sub">{{COVER_SUBLINE}}</p>
+
+    <div class="cover-meta">
+      <div>
+        <div class="label">Target Site</div>
+        <div class="value">{{TARGET_SITE}}</div>
+      </div>
+      <div>
+        <div class="label">Plan Period</div>
+        <div class="value">{{PLAN_PERIOD}}</div>
+      </div>
+      <div>
+        <div class="label">Niche</div>
+        <div class="value">{{NICHE}}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- EXECUTIVE SUMMARY                              -->
+<!-- ============================================== -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area">
+      <div class="logo-mark">W</div>
+      <div class="logo-text">Web<span>Fluence</span> Digital</div>
+    </div>
+    <div class="header-meta">{{CLIENT_NAME}} · Visibility Audit</div>
+  </div>
+
+  <p class="section-eyebrow">01 — Executive Summary</p>
+  <h2 class="section-title">Where you stand. What we'd change.</h2>
+  <p class="section-lede">{{EXEC_LEDE}}</p>
+
+  <div class="stat-grid" style="margin-bottom: 32px;">
+    <div class="stat">
+      <div class="stat-value">{{KW_TARGETS_COUNT}}</div>
+      <div class="stat-label">Keyword Targets</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">{{QUESTIONS_BANKED}}</div>
+      <div class="stat-label">AEO Questions Banked</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">{{TECH_ISSUES}}</div>
+      <div class="stat-label">Technical Issues Found</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">{{PAGES_PROPOSED}}</div>
+      <div class="stat-label">Pages Recommended</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card col-6">
+      <div class="card-label">SEO Snapshot</div>
+      <div class="card-title">{{SEO_HEADLINE}}</div>
+      <div class="card-body">{{SEO_SNAPSHOT_BODY}}</div>
+    </div>
+    <div class="card col-6">
+      <div class="card-label">AEO Snapshot</div>
+      <div class="card-title">{{AEO_HEADLINE}}</div>
+      <div class="card-body">{{AEO_SNAPSHOT_BODY}}</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>The headline:</strong> {{HEADLINE_INSIGHT}}
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- AI CITATION SCORECARD                          -->
+<!-- ============================================== -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area">
+      <div class="logo-mark">W</div>
+      <div class="logo-text">Web<span>Fluence</span> Digital</div>
+    </div>
+    <div class="header-meta">{{CLIENT_NAME}} · Visibility Audit</div>
+  </div>
+
+  <p class="section-eyebrow">02 — AI Citation Scorecard</p>
+  <h2 class="section-title">How often AI assistants recommend you.</h2>
+  <p class="section-lede">Audited across ChatGPT, Claude, Gemini, and Perplexity. {{CITATION_PROMPT_COUNT}} prompts, {{CITATION_DATAPOINTS}} data points. Results are point-in-time — AI behaviour shifts with model updates.</p>
+
+  <div class="card col-12" style="margin-bottom: 24px;">
+    <div class="card-label">Citation Rate by Platform</div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Platform</th>
+          <th>Prompts</th>
+          <th>Brand Cited</th>
+          <th>Top Competitor</th>
+          <th>Citation Rate</th>
+          <th>Gap</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{CITATION_TABLE_ROWS}}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card col-12">
+    <div class="card-label">Top Lost Prompts</div>
+    <div class="card-body" style="margin-bottom: 16px;">Queries where competitors get cited and you don't. Each one is a fix-pack target.</div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Prompt</th>
+          <th>Platform(s)</th>
+          <th>Who Wins</th>
+          <th>Why</th>
+          <th>Priority</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{LOST_PROMPTS_ROWS}}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- KEYWORD LANDSCAPE                              -->
+<!-- ============================================== -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area">
+      <div class="logo-mark">W</div>
+      <div class="logo-text">Web<span>Fluence</span> Digital</div>
+    </div>
+    <div class="header-meta">{{CLIENT_NAME}} · Visibility Audit</div>
+  </div>
+
+  <p class="section-eyebrow">03 — Keyword Landscape</p>
+  <h2 class="section-title">What you should be ranking for.</h2>
+  <p class="section-lede">Keywords prioritised by impact: combination of search volume, current position (from GSC), and how realistically you can move it. Top {{KW_TABLE_COUNT}} shown. Full set in the Visibility Strategist Airtable base.</p>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Keyword</th>
+        <th>Volume</th>
+        <th>KD</th>
+        <th>Intent</th>
+        <th>Current</th>
+        <th>Target</th>
+        <th>Priority</th>
+        <th>Owner Page</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{KEYWORD_TABLE_ROWS}}
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================== -->
+<!-- TECHNICAL FINDINGS                             -->
+<!-- ============================================== -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area">
+      <div class="logo-mark">W</div>
+      <div class="logo-text">Web<span>Fluence</span> Digital</div>
+    </div>
+    <div class="header-meta">{{CLIENT_NAME}} · Visibility Audit</div>
+  </div>
+
+  <p class="section-eyebrow">04 — Technical Findings</p>
+  <h2 class="section-title">What's broken under the hood.</h2>
+  <p class="section-lede">Issues sourced from Lighthouse, Google Search Console Coverage, Ahrefs site audit, and schema validators. Severity ranked.</p>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Issue</th>
+        <th>Category</th>
+        <th>Severity</th>
+        <th>Source</th>
+        <th>Affected URLs</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{TECH_AUDIT_ROWS}}
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================== -->
+<!-- SITEMAP RECOMMENDATIONS                        -->
+<!-- ============================================== -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area">
+      <div class="logo-mark">W</div>
+      <div class="logo-text">Web<span>Fluence</span> Digital</div>
+    </div>
+    <div class="header-meta">{{CLIENT_NAME}} · Visibility Audit</div>
+  </div>
+
+  <p class="section-eyebrow">05 — Sitemap Recommendations</p>
+  <h2 class="section-title">The pages that should exist.</h2>
+  <p class="section-lede">Each page owns a primary keyword (SEO) and answers a primary question (AEO). Schema spec'd per page. The build squad consumes this directly when both visibility + build are in scope.</p>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Page Slug</th>
+        <th>Type</th>
+        <th>Primary Keyword</th>
+        <th>Schema</th>
+        <th>Priority</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{SITEMAP_ROWS}}
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================== -->
+<!-- TOP FIXES (FIX PACK)                           -->
+<!-- ============================================== -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area">
+      <div class="logo-mark">W</div>
+      <div class="logo-text">Web<span>Fluence</span> Digital</div>
+    </div>
+    <div class="header-meta">{{CLIENT_NAME}} · Visibility Audit</div>
+  </div>
+
+  <p class="section-eyebrow">06 — Fix Pack</p>
+  <h2 class="section-title">Do these in this order.</h2>
+  <p class="section-lede">P1 in the next 7 days. P2 in the next 30. P3 within 90. Each fix has an expected impact — quoted, not guessed.</p>
+
+  <ul class="fix-list">
+    {{FIX_PACK_ITEMS}}
+  </ul>
+</section>
+
+<!-- ============================================== -->
+<!-- 90-DAY CONTENT PLAN                            -->
+<!-- ============================================== -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area">
+      <div class="logo-mark">W</div>
+      <div class="logo-text">Web<span>Fluence</span> Digital</div>
+    </div>
+    <div class="header-meta">{{CLIENT_NAME}} · Visibility Audit</div>
+  </div>
+
+  <p class="section-eyebrow">07 — 90-Day Content Plan</p>
+  <h2 class="section-title">12 posts to ship.</h2>
+  <p class="section-lede">Mix of pillar/cluster long-form (60%) and AEO-friendly question posts (40%). Each one targets a real keyword AND a real question.</p>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Post Title</th>
+        <th>Format</th>
+        <th>Target Keyword</th>
+        <th>Target Question</th>
+        <th>Owner</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{CONTENT_CALENDAR_ROWS}}
+    </tbody>
+  </table>
+
+  <div class="note" style="margin-top: 32px;">
+    <strong>Next review:</strong> {{NEXT_REVIEW_DATE}}. We re-run the AI citation audit, ranking tracker, and technical audit against this plan to measure movement and generate the next fix pack.
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- CONTACT FOOTER                                 -->
+<!-- ============================================== -->
+<section class="page">
+  <div class="header">
+    <div class="logo-area">
+      <div class="logo-mark">W</div>
+      <div class="logo-text">Web<span>Fluence</span> Digital</div>
+    </div>
+    <div class="header-meta">{{CLIENT_NAME}} · Visibility Audit</div>
+  </div>
+
+  <p class="section-eyebrow">Next Steps</p>
+  <h2 class="section-title">Page 1, or we keep working.</h2>
+  <p class="section-lede">This audit is the start of the engagement, not the end. The retainer cadence is monthly: audit the deltas, ship the fixes, measure the citations, repeat. Page 1 isn't a one-shot.</p>
+
+  <div class="footer">
+    <div class="footer-block">
+      <div class="label">Founder &amp; Operator</div>
+      <div class="value">Dusan Walla</div>
+      <div style="margin-top: 12px; font-size: 12px;">dusan.walla@webfluence.digital</div>
+      <div style="font-size: 12px;">+353 87 232 99 76</div>
+      <div style="font-size: 12px;">Dublin, Ireland</div>
+    </div>
+    <div class="footer-block">
+      <div class="label">Methodology &amp; Sources</div>
+      <div style="font-size: 12px; color: #A0A0A0; line-height: 1.7; margin-top: 6px;">
+        Google Search Console (via Supermetrics) · Ahrefs · Apify (Google Trends, SERP, Reddit) ·
+        Multi-platform AI citation testing (ChatGPT, Claude, Gemini, Perplexity) ·
+        Lighthouse Core Web Vitals · Schema.org validators
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-cta">
+    <strong>Want the full live data?</strong> Every record in this report — every keyword, every question, every technical issue, every recommendation — is in your Visibility Strategist Airtable base, kept fresh weekly. This PDF is the snapshot; the base is the live source of truth.
+  </div>
+</section>
+
+</body>
+</html>
