@@ -1,8 +1,5 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Discussion
-    url: https://github.com/webfluencedigital/visibility-strategist/discussions
-    about: Architectural questions, framing debates, or general feedback that doesn't fit a bug or feature shape
   - name: WebFluence Digital
     url: https://webfluence-digital.vercel.app
-    about: The agency this plugin was built for. Drop a line if you want help running it on your own client work.
+    about: The agency this plugin was built for. Drop a line if you want help running it on your own client work, or open an Issue here for architectural questions and framing debates.
