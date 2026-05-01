@@ -2,7 +2,7 @@
 
 > A two-agent Claude Code / Cowork plugin that audits a website's visibility across **traditional search rankings (SEO)** AND **AI recommendation engines (AEO)** — ChatGPT, Claude, Gemini, Perplexity, Google AI Overview — then writes a structured plan into Airtable and renders a branded PDF deliverable.
 
-Built for [WebFluence Digital](https://webfluence-digital.vercel.app) as the retainer half of an agency-in-a-box. Pairs with [`webfluence-squad`](https://github.com/webfluencedigital/webfluence-squad) (the build squad) or runs solo on existing sites.
+Built for [WebFluence Digital](https://webfluence.digital) as the retainer half of an agency-in-a-box. Pairs with [`webfluence-squad`](https://github.com/webfluencedigital/webfluence-squad) (the build squad) or runs solo on existing sites.
 
 ![Squad flow diagram](docs/squad-flow.svg)
 
@@ -171,7 +171,7 @@ Open issues, drop a discussion, or fork and PR. See [CONTRIBUTING.md](CONTRIBUTI
 ## Provenance
 
 - Senior orchestration patterns adapted from [msitarzewski/agency-agents/marketing/marketing-seo-specialist.md](https://github.com/msitarzewski/agency-agents/blob/main/marketing/marketing-seo-specialist.md), [marketing-ai-citation-strategist.md](https://github.com/msitarzewski/agency-agents/blob/main/marketing/marketing-ai-citation-strategist.md), and [marketing-agentic-search-optimizer.md](https://github.com/msitarzewski/agency-agents/blob/main/marketing/marketing-agentic-search-optimizer.md).
-- Voice extracted from records in the WebFluence Development Airtable base used to build [webfluence-digital.vercel.app](https://webfluence-digital.vercel.app).
+- Voice extracted from records in the WebFluence Development Airtable base used to build [webfluence.digital](https://webfluence.digital).
 - Battle-test data from the WebFluence Digital Q2 2026 visibility plan — Airtable base `appqiOiuFJBp0UNbF` (private to WebFluence; the rendered PDF is public in `examples/`).
 
 ---
@@ -184,4 +184,4 @@ If you ship this in a paid retainer engagement and the framework helped, a link 
 
 ---
 
-**Built by [Dusan Walla](mailto:dusan.walla@webfluence.digital) for [WebFluence Digital](https://webfluence-digital.vercel.app). Dublin, Ireland.**
+**Built by [Dusan Walla](mailto:dusan.walla@webfluence.digital) for [WebFluence Digital](https://webfluence.digital). Dublin, Ireland.**
