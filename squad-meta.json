@@ -1,0 +1,16 @@
+{
+  "slug": "visibility",
+  "name": "Visibility Strategist",
+  "color": "#22D3EE",
+  "plugin": "visibility-strategist",
+  "skill": "visibility-strategist:visibility-audit",
+  "fireArgsLabel": "Target URL",
+  "fireArgsPlaceholder": "https://example.com",
+  "phases": [
+    {
+      "name": "Audit",
+      "parallel": true,
+      "agents": ["seo-strategist", "aeo-strategist"]
+    }
+  ]
+}
